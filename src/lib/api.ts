@@ -1,5 +1,6 @@
-const API_BASE_URL = "http://localhost:5001/api";
-
+// Use environment variable for API URL, fallback to localhost for development
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 console.log("API_BASE_URL:", API_BASE_URL);
 
 export interface ContactFormData {
@@ -14,12 +15,20 @@ export interface Project {
   _id: string;
   title: string;
   description: string;
+  shortDescription: string;
   image: string;
   tags: string[];
-  liveUrl: string;
-  githubUrl: string;
-  category: string;
   technologies: string[];
+  features: string[];
+  liveUrl?: string;
+  githubUrl?: string;
+  status: string;
+  category: string;
+  priority: number;
+  startDate?: string;
+  completionDate?: string;
+  estimatedHours?: number;
+  actualHours?: number;
   featured: boolean;
   likes: number;
   createdAt: string;
