@@ -1,0 +1,7 @@
+# Ignore these files/directories to prevent unnecessary restarts
+node_modules/
+.env
+*.log
+*.md
+.git/
+.DS_Store
