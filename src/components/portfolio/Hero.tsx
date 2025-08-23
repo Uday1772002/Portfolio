@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Mail, Github, Linkedin } from "lucide-react";
+import { PORTFOLIO_CONFIG } from "@/lib/constants";
 
 const Hero = () => {
   const scrollToProjects = () => {
@@ -41,21 +42,29 @@ const Hero = () => {
           {/* Main Content */}
           <div className="space-y-6 animate-slide-up">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight">
-              JAYARAM UDAY
+              {PORTFOLIO_CONFIG.name
+                .split(" ")
+                .slice(0, 2)
+                .join(" ")
+                .toUpperCase()}
               <span className="block text-emerald bg-gradient-to-r from-emerald to-emerald-light bg-clip-text">
-                MARALI
+                {PORTFOLIO_CONFIG.name
+                  .split(" ")
+                  .slice(2)
+                  .join(" ")
+                  .toUpperCase()}
               </span>
             </h1>
 
             <p className="text-lg md:text-xl text-warm-gray max-w-2xl mx-auto leading-relaxed">
-              Software Engineer & GCP Certified Associate Cloud Engineer with
-              expertise in full-stack development, cloud infrastructure, and
-              scalable applications.
+              {PORTFOLIO_CONFIG.title}
             </p>
 
             {/* Contact Info */}
             <div className="text-sm text-warm-gray space-y-1">
-              <p>+91 6302595694 | jayaramuday17@gmail.com</p>
+              <p>
+                {PORTFOLIO_CONFIG.phone} | {PORTFOLIO_CONFIG.email}
+              </p>
               <p>GCP Certified: Associate Cloud Engineer</p>
             </div>
 
@@ -76,7 +85,7 @@ const Hero = () => {
                   size="lg"
                   className="border-emerald text-emerald hover:bg-emerald hover:text-white p-6 transition-all duration-300"
                   onClick={() =>
-                    window.open("mailto:jayaramuday17@gmail.com", "_blank")
+                    window.open(`mailto:${PORTFOLIO_CONFIG.email}`, "_blank")
                   }
                 >
                   <Mail className="h-5 w-5" />
@@ -86,7 +95,7 @@ const Hero = () => {
                   size="lg"
                   className="border-emerald text-emerald hover:bg-emerald hover:text-white p-6 transition-all duration-300"
                   onClick={() =>
-                    window.open("https://github.com/Uday1772002", "_blank")
+                    window.open(PORTFOLIO_CONFIG.social.github, "_blank")
                   }
                 >
                   <Github className="h-5 w-5" />
@@ -96,10 +105,7 @@ const Hero = () => {
                   size="lg"
                   className="border-emerald text-emerald hover:bg-emerald hover:text-white p-6 transition-all duration-300"
                   onClick={() =>
-                    window.open(
-                      "https://www.linkedin.com/in/jayaramuday-marali/",
-                      "_blank"
-                    )
+                    window.open(PORTFOLIO_CONFIG.social.linkedin, "_blank")
                   }
                 >
                   <Linkedin className="h-5 w-5" />

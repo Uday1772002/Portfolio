@@ -7,40 +7,27 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import { useExperiences } from "@/hooks/use-api";
+import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
 import { useScrollStacking } from "@/hooks/use-scroll-stacking";
-import { useEffect, useState } from "react";
 
 const Experience = () => {
+  console.log("🔍 Experience Component: Component rendered");
+  const { useExperiences, toggleCardExpansion, isCardExpanded } =
+    usePortfolioViewModel();
   const { data: experiences, isLoading, error } = useExperiences();
+
+  console.log("🔍 Experience Component: Hook result:", {
+    experiences,
+    isLoading,
+    error,
+  });
   const { containerRef, registerItem, getStackStyle, activeIndex } =
     useScrollStacking({
       threshold: 150,
       slideOffset: 60,
     });
-  const [expandedCards, setExpandedCards] = useState<{
-    [key: string]: boolean;
-  }>({});
-
-  const toggleCardExpansion = (cardId: string) => {
-    setExpandedCards((prev) => ({
-      ...prev,
-      [cardId]: !prev[cardId],
-    }));
-  };
-
-  useEffect(() => {
-    console.log("🔍 Experience component debug:");
-    console.log("  - data:", experiences);
-    console.log("  - isLoading:", isLoading);
-    console.log("  - error:", error);
-    console.log("  - experiences length:", experiences?.length);
-    console.log("  - experiences type:", typeof experiences);
-    console.log("  - experiences is array:", Array.isArray(experiences));
-  }, [experiences, isLoading, error]);
 
   if (isLoading) {
-    console.log("🔄 Experience component - Loading state");
     return (
       <section id="experience" className="py-20 bg-background">
         <div className="container mx-auto px-6">
@@ -67,7 +54,6 @@ const Experience = () => {
   }
 
   if (error) {
-    console.error("❌ Experience error details:", error);
     return (
       <section id="experience" className="py-20 bg-background">
         <div className="container mx-auto px-6">
@@ -99,8 +85,6 @@ const Experience = () => {
       </section>
     );
   }
-
-  console.log("🎯 Experience component - Rendering with data:", experiences);
 
   return (
     <section
@@ -217,7 +201,7 @@ const Experience = () => {
                                   ))}
 
                                 {/* Show remaining achievements if expanded */}
-                                {expandedCards[exp._id] &&
+                                {isCardExpanded(exp._id) &&
                                   exp.achievements
                                     .slice(1)
                                     .map((achievement, achievementIndex) => (
@@ -237,7 +221,7 @@ const Experience = () => {
                                   onClick={() => toggleCardExpansion(exp._id)}
                                   className="text-emerald hover:text-emerald-dark text-sm font-medium mt-3 flex items-center transition-colors"
                                 >
-                                  {expandedCards[exp._id] ? (
+                                  {isCardExpanded(exp._id) ? (
                                     <>
                                       Show Less
                                       <ChevronUp className="ml-1 h-4 w-4" />

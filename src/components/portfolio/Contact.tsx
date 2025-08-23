@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from "lucide-react";
-import { useContactForm } from "@/hooks/use-api";
+import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
 import { useToast } from "@/hooks/use-toast";
+import { PORTFOLIO_CONFIG } from "@/lib/constants";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const Contact = () => {
     message: "",
   });
 
+  const { useContactForm } = usePortfolioViewModel();
   const { mutate: submitForm, isPending } = useContactForm();
   const { toast } = useToast();
 
@@ -23,31 +25,31 @@ const Contact = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "jayaramuday17@gmail.com",
-      link: "mailto:jayaramuday17@gmail.com",
+      value: PORTFOLIO_CONFIG.email,
+      link: `mailto:${PORTFOLIO_CONFIG.email}`,
     },
     {
       icon: Phone,
       label: "Phone",
-      value: "+91 6302595694",
-      link: "tel:+916302595694",
+      value: PORTFOLIO_CONFIG.phone,
+      link: `tel:${PORTFOLIO_CONFIG.phone}`,
     },
     {
       icon: MapPin,
       label: "Location",
-      value: "Adoni, India",
+      value: PORTFOLIO_CONFIG.location,
       link: "https://www.google.com/maps/@15.6250801,77.2951508,16z?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D",
     },
   ];
 
   const socialLinks = [
-    { icon: Github, label: "GitHub", url: "https://github.com/Uday1772002" },
+    { icon: Github, label: "GitHub", url: PORTFOLIO_CONFIG.social.github },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      url: "https://www.linkedin.com/in/jayaramuday-marali/",
+      url: PORTFOLIO_CONFIG.social.linkedin,
     },
-    { icon: Twitter, label: "Twitter", url: "https://x.com/UdayMarali86687" },
+    { icon: Twitter, label: "Twitter", url: PORTFOLIO_CONFIG.social.twitter },
   ];
 
   const handleInputChange = (

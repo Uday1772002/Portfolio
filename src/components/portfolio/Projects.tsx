@@ -2,60 +2,20 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Github, Loader2 } from "lucide-react";
-import { useFeaturedProjects } from "@/hooks/use-api";
-import { useEffect } from "react";
+import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
 
 const Projects = () => {
-  // Add debugging for the hook itself
-  console.log(
-    "Projects component - useFeaturedProjects hook:",
-    useFeaturedProjects
-  );
-
+  console.log("🔍 Projects Component: Component rendered");
+  const { useFeaturedProjects } = usePortfolioViewModel();
   const { data: projects, isLoading, error } = useFeaturedProjects();
 
-  // Debug logging
-  useEffect(() => {
-    console.log("🔍 Projects component debug:");
-    console.log("  - data:", projects);
-    console.log("  - isLoading:", isLoading);
-    console.log("  - error:", error);
-    console.log("  - projects length:", projects?.length);
-    console.log("  - projects type:", typeof projects);
-    console.log("  - projects is array:", Array.isArray(projects));
-  }, [projects, isLoading, error]);
-
-  // Add error boundary for hook errors
-  if (!useFeaturedProjects) {
-    console.error("useFeaturedProjects hook is undefined!");
-    return (
-      <section id="projects" className="py-20 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-                Featured Projects
-              </h2>
-              <p className="text-lg text-warm-gray max-w-2xl mx-auto">
-                A showcase of my recent work and innovative solutions
-              </p>
-            </div>
-            <div className="text-center py-20">
-              <p className="text-warm-gray mb-4">
-                Hook initialization error. Please check console for details.
-              </p>
-              <p className="text-sm text-red-500">
-                Error: useFeaturedProjects hook is undefined
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  console.log("🔍 Projects Component: Hook result:", {
+    projects,
+    isLoading,
+    error,
+  });
 
   if (isLoading) {
-    console.log("🔄 Projects component - Loading state");
     return (
       <section id="projects" className="py-20 bg-background">
         <div className="container mx-auto px-6">
@@ -78,7 +38,6 @@ const Projects = () => {
   }
 
   if (error) {
-    console.error("❌ Projects error details:", error);
     return (
       <section id="projects" className="py-20 bg-background">
         <div className="container mx-auto px-6">
@@ -107,20 +66,6 @@ const Projects = () => {
           </div>
         </div>
       </section>
-    );
-  }
-
-  console.log("🎯 Projects component - Rendering with data:", projects);
-  console.log("🎯 Projects component - projects type:", typeof projects);
-  console.log(
-    "🎯 Projects component - projects is array:",
-    Array.isArray(projects)
-  );
-  if (projects && Array.isArray(projects)) {
-    console.log("🎯 Projects component - first project:", projects[0]);
-    console.log(
-      "🎯 Projects component - first project keys:",
-      projects[0] ? Object.keys(projects[0]) : "no projects"
     );
   }
 

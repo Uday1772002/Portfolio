@@ -3,9 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Code,
-  Palette,
-  Rocket,
-  Users,
   Cloud,
   Database,
   Smartphone,
@@ -13,59 +10,26 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { useState } from "react";
+import { PORTFOLIO_CONFIG } from "@/lib/constants";
 
 const About = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const skills = [
-    "Dart",
-    "JavaScript",
-    "Flutter",
-    "React",
-    "Redux",
-    "Node.js",
-    "Express.js",
-    "HTML5",
-    "CSS3",
-    "GCP",
-    "Docker",
-    "Kubernetes",
-    "Terraform",
-    "CI/CD",
-    "MongoDB",
-    "MySQL",
-    "Firebase",
-    "Git",
-    "Microservices",
-    "Distributed Systems",
-  ];
-
-  const highlights = [
-    {
-      icon: Code,
-      title: "Full-Stack Development",
-      description:
-        "Building scalable applications with React, Node.js, and Flutter",
-    },
-    {
-      icon: Cloud,
-      title: "Cloud & DevOps",
-      description:
-        "GCP certified engineer with expertise in containerization and CI/CD",
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile Development",
-      description:
-        "Creating cross-platform mobile apps with Flutter and React Native",
-    },
-    {
-      icon: Database,
-      title: "Database Design",
-      description:
-        "Working with MongoDB, MySQL, and Firebase for data management",
-    },
-  ];
+  const skills = PORTFOLIO_CONFIG.skills;
+  const highlights = PORTFOLIO_CONFIG.highlights.map((highlight) => ({
+    icon:
+      highlight.icon === "Code"
+        ? Code
+        : highlight.icon === "Cloud"
+        ? Cloud
+        : highlight.icon === "Smartphone"
+        ? Smartphone
+        : highlight.icon === "Database"
+        ? Database
+        : Code,
+    title: highlight.title,
+    description: highlight.description,
+  }));
 
   return (
     <section id="about" className="py-20 bg-gradient-subtle">
