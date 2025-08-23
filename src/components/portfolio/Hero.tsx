@@ -22,11 +22,18 @@ const Hero = () => {
           {/* Profile Image */}
           <div className="mb-8 animate-fade-in">
             <div className="relative inline-block">
-              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-large mx-auto animate-float bg-gradient-to-br from-emerald to-emerald-light flex items-center justify-center">
-                <span className="text-4xl md:text-6xl font-bold text-white">
-                  JU
-                </span>
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-large mx-auto animate-float">
+                <img
+                  src="/profile-pic.png"
+                  alt="Jayaram Uday Marali"
+                  className="w-full h-full object-cover"
+                />
               </div>
+              {/* <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-large mx-auto animate-float bg-gradient-to-br from-emerald to-emerald-light flex items-center justify-center">
+                <span className="text-4xl md:text-6xl font-bold text-white">
+                  J
+                </span>
+              </div> */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-emerald/20 to-transparent"></div>
             </div>
           </div>

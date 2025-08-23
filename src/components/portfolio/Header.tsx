@@ -16,10 +16,11 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-full bg-emerald"></div>
-          <span className="text-xl font-bold text-foreground">
-            Jayaram Uday
-          </span>
+          {/* <div className="h-8 w-8 rounded-full bg-emerald"></div> */}
+          <div className="h-8 w-8 rounded-full bg-emerald flex items-center justify-center text-white font-bold text-sm shadow-md">
+            P
+          </div>
+          <span className="text-xl font-bold text-foreground">Portfolio</span>
         </div>
 
         {/* Navigation */}
