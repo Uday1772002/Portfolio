@@ -1,7 +1,15 @@
-import { Calendar, Building, MapPin, Award, Loader2 } from "lucide-react";
+import {
+  Calendar,
+  Building,
+  MapPin,
+  Award,
+  Loader2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { useExperiences } from "@/hooks/use-api";
 import { useScrollStacking } from "@/hooks/use-scroll-stacking";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Experience = () => {
   const { data: experiences, isLoading, error } = useExperiences();
@@ -10,6 +18,16 @@ const Experience = () => {
       threshold: 150,
       slideOffset: 60,
     });
+  const [expandedCards, setExpandedCards] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  const toggleCardExpansion = (cardId: string) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [cardId]: !prev[cardId],
+    }));
+  };
 
   useEffect(() => {
     console.log("🔍 Experience component debug:");
@@ -95,11 +113,11 @@ const Experience = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-foreground mb-4">
               Work Experience
             </h2>
-            <p className="text-lg text-warm-gray max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-warm-gray max-w-2xl mx-auto">
               My professional journey in software engineering and cloud
               development
             </p>
@@ -118,20 +136,20 @@ const Experience = () => {
                 className="relative"
                 style={getStackStyle(index)}
               >
-                <div className="border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 backdrop-blur-sm bg-background/80">
-                  <div className="grid lg:grid-cols-3 gap-6">
+                <div className="border border-border rounded-2xl p-4 md:p-8 shadow-lg hover:shadow-xl transition-all duration-500 backdrop-blur-sm bg-background/80">
+                  <div className="grid lg:grid-cols-3 gap-4 md:gap-6">
                     {/* Company Info */}
                     <div className="lg:col-span-1">
-                      <div className="flex items-center space-x-3 mb-4">
-                        <div className="h-12 w-12 rounded-xl bg-emerald/10 flex items-center justify-center">
-                          <Building className="h-6 w-6 text-emerald" />
+                      <div className="flex items-center space-x-3 mb-3 md:mb-4">
+                        <div className="h-10 w-10 md:h-12 md:w-12 rounded-xl bg-emerald/10 flex items-center justify-center">
+                          <Building className="h-5 w-5 md:h-6 md:w-6 text-emerald" />
                         </div>
-                        <h3 className="text-xl font-semibold text-foreground group-hover:text-emerald transition-colors">
+                        <h3 className="text-lg md:text-xl font-semibold text-foreground group-hover:text-emerald transition-colors">
                           {exp.company}
                         </h3>
                       </div>
 
-                      <div className="space-y-3 text-sm">
+                      <div className="space-y-2 md:space-y-3 text-sm">
                         <div className="flex items-center space-x-2 text-warm-gray">
                           <Calendar className="h-4 w-4" />
                           <span>
@@ -173,7 +191,7 @@ const Experience = () => {
 
                     {/* Experience Details */}
                     <div className="lg:col-span-2">
-                      <div className="space-y-6">
+                      <div className="space-y-4 md:space-y-6">
                         {/* Achievements */}
                         {exp.achievements && exp.achievements.length > 0 && (
                           <div>
@@ -181,19 +199,76 @@ const Experience = () => {
                               <Award className="h-4 w-4 mr-2 text-emerald" />
                               Key Achievements
                             </h4>
-                            <ul className="space-y-2">
-                              {exp.achievements.map(
-                                (achievement, achievementIndex) => (
-                                  <li
-                                    key={achievementIndex}
-                                    className="text-warm-gray text-sm flex items-start"
-                                  >
-                                    <span className="w-2 h-2 bg-emerald rounded-full mt-2 mr-3 flex-shrink-0" />
-                                    {achievement}
-                                  </li>
-                                )
+
+                            {/* Mobile: Collapsible achievements */}
+                            <div className="md:hidden">
+                              <ul className="space-y-2">
+                                {/* Show first achievement always */}
+                                {exp.achievements
+                                  .slice(0, 1)
+                                  .map((achievement, achievementIndex) => (
+                                    <li
+                                      key={achievementIndex}
+                                      className="text-warm-gray text-sm flex items-start"
+                                    >
+                                      <span className="w-2 h-2 bg-emerald rounded-full mt-2 mr-3 flex-shrink-0" />
+                                      {achievement}
+                                    </li>
+                                  ))}
+
+                                {/* Show remaining achievements if expanded */}
+                                {expandedCards[exp._id] &&
+                                  exp.achievements
+                                    .slice(1)
+                                    .map((achievement, achievementIndex) => (
+                                      <li
+                                        key={achievementIndex + 1}
+                                        className="text-warm-gray text-sm flex items-start"
+                                      >
+                                        <span className="w-2 h-2 bg-emerald rounded-full mt-2 mr-3 flex-shrink-0" />
+                                        {achievement}
+                                      </li>
+                                    ))}
+                              </ul>
+
+                              {/* Read More/Less Button - only show if there are more than 1 achievement */}
+                              {exp.achievements.length > 1 && (
+                                <button
+                                  onClick={() => toggleCardExpansion(exp._id)}
+                                  className="text-emerald hover:text-emerald-dark text-sm font-medium mt-3 flex items-center transition-colors"
+                                >
+                                  {expandedCards[exp._id] ? (
+                                    <>
+                                      Show Less
+                                      <ChevronUp className="ml-1 h-4 w-4" />
+                                    </>
+                                  ) : (
+                                    <>
+                                      Read More ({exp.achievements.length - 1}{" "}
+                                      more)
+                                      <ChevronDown className="ml-1 h-4 w-4" />
+                                    </>
+                                  )}
+                                </button>
                               )}
-                            </ul>
+                            </div>
+
+                            {/* Desktop: Always show all achievements */}
+                            <div className="hidden md:block">
+                              <ul className="space-y-2">
+                                {exp.achievements.map(
+                                  (achievement, achievementIndex) => (
+                                    <li
+                                      key={achievementIndex}
+                                      className="text-warm-gray text-sm flex items-start"
+                                    >
+                                      <span className="w-2 h-2 bg-emerald rounded-full mt-2 mr-3 flex-shrink-0" />
+                                      {achievement}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
                           </div>
                         )}
 

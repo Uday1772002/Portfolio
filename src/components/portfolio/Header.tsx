@@ -1,11 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { useScrollNavigation } from "@/hooks/use-scroll-navigation";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 
 const Header = () => {
   const { scrollToSection } = useScrollNavigation();
   const { theme, setTheme } = useTheme();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleMobileNavClick = (sectionId: string) => {
+    scrollToSection(sectionId);
+    setIsMobileMenuOpen(false);
+  };
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -16,11 +27,12 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          {/* <div className="h-8 w-8 rounded-full bg-emerald"></div> */}
           <div className="h-8 w-8 rounded-full bg-emerald flex items-center justify-center text-white font-bold text-sm shadow-md">
             P
           </div>
-          <span className="text-xl font-bold text-foreground">Portfolio</span>
+          <span className="text-xl font-bold text-foreground hidden sm:block">
+            Portfolio
+          </span>
         </div>
 
         {/* Navigation */}
@@ -75,8 +87,54 @@ const Header = () => {
           >
             Get In Touch
           </Button>
+
+          {/* Mobile Menu Button */}
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={toggleMobileMenu}
+            className="md:hidden p-2"
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
+          </Button>
         </div>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-background/95 backdrop-blur border-t border-border/40">
+          <nav className="container py-4 space-y-2">
+            <button
+              onClick={() => handleMobileNavClick("about")}
+              className="w-full text-left px-4 py-3 text-foreground hover:text-emerald hover:bg-emerald/5 transition-colors rounded-lg"
+            >
+              About
+            </button>
+            <button
+              onClick={() => handleMobileNavClick("experience")}
+              className="w-full text-left px-4 py-3 text-foreground hover:text-emerald hover:bg-emerald/5 transition-colors rounded-lg"
+            >
+              Experience
+            </button>
+            <button
+              onClick={() => handleMobileNavClick("projects")}
+              className="w-full text-left px-4 py-3 text-foreground hover:text-emerald hover:bg-emerald/5 transition-colors rounded-lg"
+            >
+              Projects
+            </button>
+            <button
+              onClick={() => handleMobileNavClick("contact")}
+              className="w-full text-left px-4 py-3 text-foreground hover:text-emerald hover:bg-emerald/5 transition-colors rounded-lg"
+            >
+              Contact
+            </button>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
