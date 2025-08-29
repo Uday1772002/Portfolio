@@ -28,10 +28,10 @@ const Header = () => {
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <div className="h-8 w-8 rounded-full bg-emerald flex items-center justify-center text-white font-bold text-sm shadow-md">
-            P
+            J
           </div>
           <span className="text-xl font-bold text-foreground hidden sm:block">
-            Portfolio
+            Jayaram Uday
           </span>
         </div>
 
