@@ -8,7 +8,6 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
-import { useScrollStacking } from "@/hooks/use-scroll-stacking";
 
 const Experience = () => {
   console.log("🔍 Experience Component: Component rendered");
@@ -21,11 +20,6 @@ const Experience = () => {
     isLoading,
     error,
   });
-  const { containerRef, registerItem, getStackStyle, activeIndex } =
-    useScrollStacking({
-      threshold: 150,
-      slideOffset: 60,
-    });
 
   if (isLoading) {
     return (
@@ -91,7 +85,7 @@ const Experience = () => {
       id="experience"
       className="py-20 bg-background relative overflow-hidden"
     >
-      {/* Background Glow Effect */}
+      {/* Simple Background Effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-blue-500/5 pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -107,34 +101,86 @@ const Experience = () => {
             </p>
           </div>
 
-          {/* Experience Timeline with Sliding/Covering Effect */}
-          <div
-            ref={containerRef}
-            className="relative space-y-8"
-            style={{ perspective: "1000px" }}
-          >
+          {/* Experience Cards - Simple Layout */}
+          <div className="space-y-6">
             {experiences?.map((exp, index) => (
-              <div
-                key={exp._id}
-                ref={(el) => registerItem(index, el)}
-                className="relative"
-                style={getStackStyle(index)}
-              >
-                <div className="border border-border rounded-2xl p-4 md:p-8 shadow-lg hover:shadow-xl transition-all duration-500 backdrop-blur-sm bg-background/80">
-                  <div className="grid lg:grid-cols-3 gap-4 md:gap-6">
+              <div key={exp._id} className="group">
+                {/* Simple Card with Basic Hover Effects */}
+                <div className="border border-border rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-background/80 hover:bg-background/90">
+                  {/* Mobile: Compact View - Company, Dates, Remote, Job Title */}
+                  <div className="md:hidden">
+                    {/* Company and Job Title Section */}
+                    <div className="mb-4">
+                      <div className="flex items-start space-x-3 mb-3">
+                        <div className="h-12 w-12 rounded-xl bg-emerald/10 flex items-center justify-center group-hover:bg-emerald/20 transition-all duration-300 flex-shrink-0">
+                          <Building className="h-6 w-6 text-emerald" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-xl font-bold text-foreground group-hover:text-emerald transition-colors duration-300 mb-2">
+                            {exp.company}
+                          </h3>
+                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold bg-emerald/10 text-emerald border border-emerald/20 group-hover:bg-emerald/20 group-hover:border-emerald/30 transition-all duration-300">
+                            {exp.position}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Dates and Location Section */}
+                    <div className="space-y-3">
+                      {/* Dates and Location on same line */}
+                      <div className="flex items-center justify-between text-sm text-warm-gray group-hover:text-warm-gray/80 transition-colors duration-300">
+                        <div className="flex items-center space-x-3">
+                          <Calendar className="h-5 w-5 flex-shrink-0" />
+                          <span className="font-medium">
+                            {exp.duration.startDate &&
+                              new Date(
+                                exp.duration.startDate
+                              ).toLocaleDateString("en-US", {
+                                month: "short",
+                                year: "numeric",
+                              })}
+                            {exp.duration.endDate &&
+                              !exp.duration.isCurrent && (
+                                <>
+                                  {" "}
+                                  -{" "}
+                                  {new Date(
+                                    exp.duration.endDate
+                                  ).toLocaleDateString("en-US", {
+                                    month: "short",
+                                    year: "numeric",
+                                  })}
+                                </>
+                              )}
+                            {exp.duration.isCurrent && " - Present"}
+                          </span>
+                        </div>
+
+                        {/* Location */}
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="h-5 w-5 flex-shrink-0" />
+                          <span className="font-medium">{exp.location}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop: Full Detailed View */}
+                  <div className="hidden md:grid lg:grid-cols-3 gap-4 md:gap-6">
                     {/* Company Info */}
                     <div className="lg:col-span-1">
                       <div className="flex items-center space-x-3 mb-3 md:mb-4">
-                        <div className="h-10 w-10 md:h-12 md:w-12 rounded-xl bg-emerald/10 flex items-center justify-center">
+                        <div className="h-10 w-10 md:h-12 md:w-12 rounded-xl bg-emerald/10 flex items-center justify-center group-hover:bg-emerald/20 transition-all duration-300">
                           <Building className="h-5 w-5 md:h-6 md:w-6 text-emerald" />
                         </div>
-                        <h3 className="text-lg md:text-xl font-semibold text-foreground group-hover:text-emerald transition-colors">
+                        <h3 className="text-lg md:text-xl font-semibold text-foreground group-hover:text-emerald transition-colors duration-300">
                           {exp.company}
                         </h3>
                       </div>
 
                       <div className="space-y-2 md:space-y-3 text-sm">
-                        <div className="flex items-center space-x-2 text-warm-gray">
+                        <div className="flex items-center space-x-2 text-warm-gray group-hover:text-warm-gray/80 transition-colors duration-300">
                           <Calendar className="h-4 w-4" />
                           <span>
                             {exp.duration.startDate &&
@@ -160,14 +206,14 @@ const Experience = () => {
                             {exp.duration.isCurrent && " - Present"}
                           </span>
                         </div>
-                        <div className="flex items-center space-x-2 text-warm-gray">
+                        <div className="flex items-center space-x-2 text-warm-gray group-hover:text-warm-gray/80 transition-colors duration-300">
                           <MapPin className="h-4 w-4" />
                           <span>{exp.location}</span>
                         </div>
                       </div>
 
                       <div className="mt-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald/10 text-emerald border border-emerald/20">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald/10 text-emerald border border-emerald/20 group-hover:bg-emerald/20 group-hover:border-emerald/30 transition-all duration-300">
                           {exp.position}
                         </span>
                       </div>
@@ -179,7 +225,7 @@ const Experience = () => {
                         {/* Achievements */}
                         {exp.achievements && exp.achievements.length > 0 && (
                           <div>
-                            <h4 className="font-semibold text-foreground mb-3 flex items-center">
+                            <h4 className="font-semibold text-foreground mb-3 flex items-center group-hover:text-emerald transition-colors duration-300">
                               <Award className="h-4 w-4 mr-2 text-emerald" />
                               Key Achievements
                             </h4>
@@ -215,11 +261,11 @@ const Experience = () => {
                                     ))}
                               </ul>
 
-                              {/* Read More/Less Button - only show if there are more than 1 achievement */}
+                              {/* Read More/Less Button */}
                               {exp.achievements.length > 1 && (
                                 <button
                                   onClick={() => toggleCardExpansion(exp._id)}
-                                  className="text-emerald hover:text-emerald-dark text-sm font-medium mt-3 flex items-center transition-colors"
+                                  className="text-emerald hover:text-emerald-dark text-sm font-medium mt-3 flex items-center transition-colors duration-300"
                                 >
                                   {isCardExpanded(exp._id) ? (
                                     <>
@@ -259,14 +305,14 @@ const Experience = () => {
                         {/* Technologies */}
                         {exp.technologies && exp.technologies.length > 0 && (
                           <div>
-                            <h4 className="font-semibold text-foreground mb-3">
+                            <h4 className="font-semibold text-foreground mb-3 group-hover:text-emerald transition-colors duration-300">
                               Technologies Used
                             </h4>
                             <div className="flex flex-wrap gap-2">
                               {exp.technologies.map((tech, techIndex) => (
                                 <span
                                   key={techIndex}
-                                  className="px-3 py-1 text-xs border border-emerald/20 text-emerald bg-emerald/5 rounded-full hover:bg-emerald/10 transition-colors"
+                                  className="px-3 py-1 text-xs border border-emerald/20 text-emerald bg-emerald/5 rounded-full hover:bg-emerald/10 hover:border-emerald/30 transition-all duration-300 cursor-default"
                                 >
                                   {tech}
                                 </span>

@@ -110,45 +110,82 @@ const Education = () => {
               {education.map((edu, index) => (
                 <Card
                   key={index}
-                  className="p-6 border-border hover:shadow-medium transition-shadow duration-300"
+                  className="p-4 md:p-6 border-border hover:shadow-medium transition-shadow duration-300 group"
                 >
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-xl font-semibold text-foreground mb-2">
-                        {edu.degree}
-                      </h4>
-                      <div className="flex items-center space-x-4 text-sm text-warm-gray mb-3">
-                        <div className="flex items-center space-x-2">
-                          <MapPin className="h-4 w-4" />
-                          <span>{edu.institution}</span>
+                  {/* Mobile: Compact View - Course Name, University, Location */}
+                  <div className="md:hidden">
+                    {/* Course Name Section */}
+                    <div className="mb-4">
+                      <div className="flex items-start space-x-3 mb-3">
+                        <div className="h-12 w-12 rounded-xl bg-emerald/10 flex items-center justify-center group-hover:bg-emerald/20 transition-all duration-300 flex-shrink-0">
+                          <GraduationCap className="h-6 w-6 text-emerald" />
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <Calendar className="h-4 w-4" />
-                          <span>{edu.duration}</span>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-xl font-bold text-foreground group-hover:text-emerald transition-colors duration-300 mb-2">
+                            {edu.degree}
+                          </h4>
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <MapPin className="h-4 w-4 text-emerald" />
-                        <span className="text-sm text-warm-gray">
-                          {edu.location}
-                        </span>
                       </div>
                     </div>
 
-                    <div>
-                      <h5 className="font-medium text-foreground mb-3">
-                        Relevant Coursework
-                      </h5>
-                      <div className="flex flex-wrap gap-2">
-                        {edu.relevantCoursework.map((course, courseIndex) => (
-                          <Badge
-                            key={courseIndex}
-                            variant="secondary"
-                            className="bg-emerald/10 text-emerald border-emerald/20 text-xs"
-                          >
-                            {course}
-                          </Badge>
-                        ))}
+                    {/* University and Location Section */}
+                    <div className="space-y-3">
+                      {/* University and Location on same line */}
+                      <div className="flex items-center justify-between text-sm text-warm-gray group-hover:text-warm-gray/80 transition-colors duration-300">
+                        <div className="flex items-center space-x-3">
+                          <GraduationCap className="h-5 w-5 flex-shrink-0" />
+                          <span className="font-medium">{edu.institution}</span>
+                        </div>
+
+                        {/* Location */}
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="h-5 w-5 flex-shrink-0" />
+                          <span className="font-medium">{edu.location}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop: Full Detailed View */}
+                  <div className="hidden md:block">
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="text-xl font-semibold text-foreground mb-2">
+                          {edu.degree}
+                        </h4>
+                        <div className="flex items-center space-x-4 text-sm text-warm-gray mb-3">
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="h-4 w-4" />
+                            <span>{edu.institution}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Calendar className="h-4 w-4" />
+                            <span>{edu.duration}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <MapPin className="h-4 w-4 text-emerald" />
+                          <span className="text-sm text-warm-gray">
+                            {edu.location}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h5 className="font-medium text-foreground mb-3">
+                          Relevant Coursework
+                        </h5>
+                        <div className="flex flex-wrap gap-2">
+                          {edu.relevantCoursework.map((course, courseIndex) => (
+                            <Badge
+                              key={courseIndex}
+                              variant="secondary"
+                              className="bg-emerald/10 text-emerald border-emerald/20 text-xs"
+                            >
+                              {course}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>

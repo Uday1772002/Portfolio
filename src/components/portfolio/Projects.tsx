@@ -101,48 +101,83 @@ const Projects = () => {
                 </div>
 
                 {/* Project Content */}
-                <div className="p-6 space-y-4">
-                  <h3 className="text-xl font-semibold text-foreground group-hover:text-emerald transition-colors">
-                    {project.title}
-                  </h3>
+                <div className="p-4 md:p-6 space-y-4">
+                  {/* Mobile: Compact View - Project Name and Action Buttons */}
+                  <div className="md:hidden">
+                    {/* Project Name Section */}
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-foreground group-hover:text-emerald transition-colors duration-300 mb-3">
+                        {project.title}
+                      </h3>
+                    </div>
 
-                  <p className="text-warm-gray leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag, tagIndex) => (
-                      <Badge
-                        key={tagIndex}
-                        variant="secondary"
-                        className="bg-emerald/10 text-emerald border-emerald/20 text-xs"
+                    {/* Action Buttons - Full Width */}
+                    <div className="space-y-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-emerald text-emerald hover:bg-emerald hover:text-white transition-all duration-300 h-12 text-base font-medium"
+                        onClick={() => window.open(project.liveUrl, "_blank")}
                       >
-                        {tag}
-                      </Badge>
-                    ))}
+                        <ExternalLink className="h-5 w-5 mr-2" />
+                        Live Demo
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-emerald text-emerald hover:bg-emerald hover:text-white transition-all duration-300 h-12 text-base font-medium"
+                        onClick={() => window.open(project.githubUrl, "_blank")}
+                      >
+                        <Github className="h-5 w-5 mr-2" />
+                        View Code
+                      </Button>
+                    </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex gap-3 pt-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-emerald text-emerald hover:bg-emerald hover:text-white transition-all duration-300 flex-1"
-                      onClick={() => window.open(project.liveUrl, "_blank")}
-                    >
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Live Demo
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-emerald text-emerald hover:bg-emerald hover:text-white transition-all duration-300 flex-1"
-                      onClick={() => window.open(project.githubUrl, "_blank")}
-                    >
-                      <Github className="h-4 w-4 mr-2" />
-                      Code
-                    </Button>
+                  {/* Desktop: Full Detailed View */}
+                  <div className="hidden md:block">
+                    <h3 className="text-xl font-semibold text-foreground group-hover:text-emerald transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-warm-gray leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag, tagIndex) => (
+                        <Badge
+                          key={tagIndex}
+                          variant="secondary"
+                          className="bg-emerald/10 text-emerald border-emerald/20 text-xs"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 pt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-emerald text-emerald hover:bg-emerald hover:text-white transition-all duration-300 flex-1"
+                        onClick={() => window.open(project.liveUrl, "_blank")}
+                      >
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Live Demo
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-emerald text-emerald hover:bg-emerald hover:text-white transition-all duration-300 flex-1"
+                        onClick={() => window.open(project.githubUrl, "_blank")}
+                      >
+                        <Github className="h-5 w-5 mr-2" />
+                        Code
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </Card>
